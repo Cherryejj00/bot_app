@@ -33,32 +33,41 @@
 </head>
 <body>
 
-    <h2>Привет! Введи что-нибудь:</h2>
+    <h2>Оформление заявки</h2>
 
-    <input type="text" id="user_input" placeholder="Напиши тут свой текст...">
-    <br>
-    <button id="send_btn">Отправить в бот</button>
+<label for="service_select">Выберите услугу:</label><br>
+<select id="service_select" style="padding: 10px; width: 84%; margin-bottom: 20px; border-radius: 5px; font-size: 16px;">
+    <option value="Замена масла">Замена масла 🛢️</option>
+    <option value="Шиномонтаж">Шиномонтаж 🛞</option>
+    <option value="Мойка кузова">Мойка кузова 🧼</option>
+</select>
+<br>
+
+<label for="user_input">Комментарий к заказу:</label><br>
+<input type="text" id="user_input" placeholder="Например: приеду к 18:00...">
+<br>
+<button id="send_btn">Отправить заявку</button>
 
     <script>
-        // Инициализируем Telegram WebApp
         let tg = window.Telegram.WebApp;
-        tg.expand(); // Расширяем приложение на весь экран
+tg.expand();
 
-        let btn = document.getElementById("send_btn");
+let btn = document.getElementById("send_btn");
 
-        // Пишем код на JavaScript: что делать при нажатии на кнопку
-        btn.addEventListener("click", function() {
-            // Забираем то, что пользователь написал в инпут
-            let userText = document.getElementById("user_input").value;
+btn.addEventListener("click", function() {
+    // 1. Забираем значение из выпадающего списка
+    let selectedService = document.getElementById("service_select").value;
 
-            if (userText.trim() === "") {
-                alert("Пожалуйста, введи хоть что-то!");
-                return;
-            }
+    // 2. Забираем текст из поля ввода
+    let userComment = document.getElementById("user_input").value;
 
-            // Отправляем именно этот текст в нашего бота!
-            tg.sendData(userText);
-        });
+    // 3. Упаковываем данные в специальный текстовый формат JSON
+    // Мы склеиваем их через разделитель, например, знак вертикальной черты |
+    let messageToBot = selectedService + " | " + userComment;
+
+    // Отправляем эту общую строку в бот
+    tg.sendData(messageToBot);
+});
     </script>
 </body>
 </html>
