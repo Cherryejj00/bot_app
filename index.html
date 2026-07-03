@@ -65,6 +65,9 @@
             const orderData = {
                 service: selectedService,
                 comment: userComment
+                // Вытаскиваем ID и username прямо из Telegram!
+                user_id: tg.initDataUnsafe?.user?.id || 0,
+                username: tg.initDataUnsafe?.user?.username || "unknown"
             };
 
             // 4. Отправляем данные на наш Python-сервер (добавили /api/order)
