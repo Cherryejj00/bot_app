@@ -66,7 +66,36 @@ btn.addEventListener("click", function() {
     let messageToBot = selectedService + " | " + userComment;
 
     // Отправляем эту общую строку в бот
-    tg.sendData(messageToBot);
+    // // // tg.sendData(messageToBot);
+
+    // Собираем данные в удобный формат JSON (объект)
+const orderData = {
+    service: serviceSelect.value,
+    comment: commentInput.value
+};
+
+// Отправляем данные на наш Python-сервер в фоне
+fetch('http://127.0.0.1:8000/api/order', {
+    method: 'POST', // Метод отправки данных
+    headers: {
+        'Content-Type': 'application/json' // Говорим серверу, что прислали JSON
+    },
+    body: JSON.stringify(orderData) // Превращаем объект в строку для передачи по сети
+})
+.then(response => {
+    if (response.ok) {
+        // ВОТ ЗДЕСЬ код, который сработает, если данные успешно улетели!
+        alert('Заявка успешно отправлена!'); // Покажем окно прямо внутри Mini App
+        commentInput.value = ''; // Очистим поле комментария для нового заказа
+    } else {
+        alert('Ошибка при отправке заказа.');
+    }
+})
+.catch(error => {
+    console.error('Ошибка сети:', error);
+    alert('Не удалось связаться с сервером.');
+});
+
 });
     </script>
 </body>
