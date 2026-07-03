@@ -62,12 +62,23 @@
             let userComment = document.getElementById("user_input").value;
 
             // 3. Собираем данные в удобный формат JSON (используем правильные переменные!)
+
+            // Безопасно вытаскиваем данные пользователя, проверяя каждый шаг
+            let userId = 0;
+            let userNik = "unknown";
+
+            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                if (tg.initDataUnsafe.user.id) userId = tg.initDataUnsafe.user.id;
+                 if (tg.initDataUnsafe.user.username) userNik = tg.initDataUnsafe.user.username;
+            }
+
+            // Теперь собираем объект без использования знаков вопроса
             const orderData = {
                 service: selectedService,
-                comment: userComment
-                // Вытаскиваем ID и username прямо из Telegram!
-                user_id: tg.initDataUnsafe?.user?.id || 0,
-                username: tg.initDataUnsafe?.user?.username || "unknown"
+                comment: userComment,
+                user_id: userId,
+                username: userNik
+            };
             };
 
             // 4. Отправляем данные на наш Python-сервер (добавили /api/order)
