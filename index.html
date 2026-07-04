@@ -35,15 +35,15 @@
 
     <h2>Оформление заявки</h2>
 
-<label for="service_select">Выберите услугу:</label><br>
+<label for="service_select">Кто ты есть?</label><br>
 <select id="service_select" style="padding: 10px; width: 84%; margin-bottom: 20px; border-radius: 5px; font-size: 16px;">
-    <option value="Замена масла">Замена масла 🛢️</option>
+    <option value="Нефор">Нефор</option>
     <option value="Шиномонтаж">Шиномонтаж 🛞</option>
     <option value="Мойка кузова">Мойка кузова 🧼</option>
 </select>
 <br>
 
-<label for="user_input">Комментарий к заказу:</label><br>
+<label for="user_input">Комментарий:</label><br>
 <input type="text" id="user_input" placeholder="Например: приеду к 18:00...">
 <br>
 <button id="send_btn">Отправить заявку</button>
@@ -85,7 +85,7 @@
                 first_name: userFirstName,
                 last_name: userLastName
             }
-            
+
 
             // 4. Отправляем данные на наш Python-сервер (добавили /api/order)
             fetch('https://unstirred-sublevel-playing.ngrok-free.dev/api/order', {
