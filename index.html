@@ -56,6 +56,9 @@
 
         btn.addEventListener("click", function() {
             // 1. Забираем значение из выпадающего списка
+            // 🔥 ДОБАВЬ ЭТУ СТРОКУ ДЛЯ ТЕСТА:
+            alert("Сырые данные ТГ: " + window.Telegram.WebApp.initData);
+            
             let selectedService = document.getElementById("service_select").value;
 
             // 2. Забираем текст из поля ввода
