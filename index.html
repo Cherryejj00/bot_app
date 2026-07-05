@@ -42,7 +42,18 @@
     <option value="Мойка кузова">Мойка кузова 🧼</option>
 </select>
 <br>
+<label for="date_select">Выберите дату:</label><br>
+<input type="date" id="date_select" style="padding: 10px; width: 80%; margin-bottom: 20px; border-radius: 5px; font-size: 16px;"><br>
 
+<label>Доступное время:</label><br>
+<div id="time_slots" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 84%; margin: 0 auto 20px auto;">
+    <button type="button" class="time-slot" style="background-color: #e0e0e0; color: black;">10:00</button>
+    <button type="button" class="time-slot" style="background-color: #e0e0e0; color: black;">12:00</button>
+    <button type="button" class="time-slot" style="background-color: #e0e0e0; color: black;">14:00</button>
+    <button type="button" class="time-slot" style="background-color: #e0e0e0; color: black;">16:00</button>
+    <button type="button" class="time-slot" style="background-color: #e0e0e0; color: black;">18:00</button>
+    <button type="button" class="time-slot" style="background-color: #e0e0e0; color: black;">20:00</button>
+</div>
 <label for="user_input">Комментарий:</label><br>
 <input type="text" id="user_input" placeholder="Например: приеду к 18:00...">
 <br>
@@ -54,10 +65,29 @@
 
         let btn = document.getElementById("send_btn");
 
+        let selectedTime = ""; // Переменная для хранения выбранного времени
+
+        // Находим все плиточки времени
+        const slots = document.querySelectorAll('.time-slot');
+        slots.forEach(slot => {
+            slot.addEventListener('click', function() {
+                // Сбрасываем цвет у всех плиток
+                slots.forEach(s => {
+                    s.style.backgroundColor = '#e0e0e0';
+                    s.style.color = 'black';
+                });
+                // Выделяем синим цветом ту, на которую нажали
+                this.style.backgroundColor = '#0088cc';
+                this.style.color = 'white';
+                // Запоминаем выбранное время
+                selectedTime = this.innerText;
+            });
+        });        
+
         btn.addEventListener("click", function() {
             // 1. Забираем значение из выпадающего списка
 
-
+            let selectedDate = document.getElementById("date_select").value; // переменная с датой
             let selectedService = document.getElementById("service_select").value;
 
             // 2. Забираем текст из поля ввода
@@ -78,11 +108,18 @@
                 if (tg.initDataUnsafe.user.last_name) userLastName = tg.initDataUnsafe.user.last_name;
             }
 
+            if (!selectedDate || !selectedTime) {
+                alert("Пожалуйста, выберите дату и время записи!");
+                return; // Останавливаем отправку, если клиент что-то забыл указать
+            }
+
             // Теперь собираем объект без использования знаков вопроса
             const orderData = {
                 service: selectedService,
                 comment: userComment,
                 user_id: userId,
+                date: selectedDate,       // <-- НОВОЕ ПОЛЕ
+                time: selectedTime,       // <-- НОВОЕ ПОЛЕ
                 username: userNik,
                 first_name: userFirstName,
                 last_name: userLastName
