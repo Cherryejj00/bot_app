@@ -101,12 +101,8 @@
             let userFirstName = "unknown"; // <-- Добавили переменную для имени
             let userLastName = "non";
 
-            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-                if (tg.initDataUnsafe.user.id) userId = tg.initDataUnsafe.user.id;
-                if (tg.initDataUnsafe.user.username) userNik = tg.initDataUnsafe.user.username;
-                if (tg.initDataUnsafe.user.first_name) userFirstName = tg.initDataUnsafe.user.first_name; // <-- Добавили чтение имени
-                if (tg.initDataUnsafe.user.last_name) userLastName = tg.initDataUnsafe.user.last_name;
-            }
+
+            
 
             if (!selectedDate || !selectedTime) {
                 alert("Пожалуйста, выберите дату и время записи!");
@@ -117,12 +113,9 @@
             const orderData = {
                 service: selectedService,
                 comment: userComment,
-                user_id: userId,
-                date: selectedDate,       // <-- НОВОЕ ПОЛЕ
-                time: selectedTime,       // <-- НОВОЕ ПОЛЕ
-                username: userNik,
-                first_name: userFirstName,
-                last_name: userLastName
+                date: selectedDate,
+                time: selectedTime,
+                init_data: tg.initData
             }
 
 
