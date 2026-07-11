@@ -71,8 +71,43 @@
 
         // Устанавливаем минимально доступную дату в календаре — раньше завтра выбрать нельзя
         document.getElementById("date_select").min = minDate;
-        
+
         let btn = document.getElementById("send_btn");
+
+        document.getElementById("date_select").addEventListener("change", async function() {
+            let selectedDate = this.value;
+
+            if (!selectedDate) return;
+
+            // Сбрасываем предыдущий выбор времени при смене даты
+            selectedTime = "";
+            slots.forEach(s => {
+                s.style.backgroundColor = '#e0e0e0';
+                s.style.color = 'black';
+                s.disabled = false;
+                s.style.opacity = '1';
+                s.style.cursor = 'pointer';
+            });
+
+            try {
+                const response = await fetch(`https://unstirred-sublevel-playing.ngrok-free.dev/api/booked-slots?date=${selectedDate}`);
+                const data = await response.json();
+                const bookedTimes = data.booked_times;
+
+                // Проходим по всем кнопкам времени и отключаем занятые
+                slots.forEach(slot => {
+                    if (bookedTimes.includes(slot.innerText)) {
+                        slot.disabled = true;
+                        slot.style.opacity = '0.4';
+                        slot.style.cursor = 'not-allowed';
+                        slot.style.backgroundColor = '#ccc';
+                    }
+                });
+            } catch (error) {
+                console.error('Не удалось загрузить занятые слоты:', error);
+            }
+        });
+
 
         let selectedTime = ""; // Переменная для хранения выбранного времени
 
@@ -91,7 +126,7 @@
                 // Запоминаем выбранное время
                 selectedTime = this.innerText;
             });
-        });        
+        });
 
         btn.addEventListener("click", function() {
             // 1. Забираем значение из выпадающего списка
@@ -111,7 +146,7 @@
             let userLastName = "non";
 
 
-            
+
 
             if (!selectedDate || !selectedTime) {
                 alert("Пожалуйста, выберите дату и время записи!");
@@ -145,7 +180,7 @@
                     response.json().then(data => {
                         alert('Ошибка: ' + (data.detail || 'не удалось отправить заказ'));
                     });
-                }    
+                }
             })
             .catch(error => {
                 console.error('Ошибка сети:', error);
