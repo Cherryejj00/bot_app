@@ -83,7 +83,12 @@
                 s.style.cursor = 'pointer';
             });
             try {
-                const response = await fetch(`https://unstirred-sublevel-playing.ngrok-free.dev/api/booked-slots?date=${selectedDate}`);
+                const response = await fetch(
+                                `https://unstirred-sublevel-playing.ngrok-free.dev/api/booked-slots?date=${selectedDate}`,
+                                {
+                                    headers: { 'ngrok-skip-browser-warning': 'true' }
+                                }
+                    );
                 const data = await response.json();
                 const bookedTimes = data.booked_times;
                 slots.forEach(slot => {
@@ -139,7 +144,10 @@
 
             fetch('https://unstirred-sublevel-playing.ngrok-free.dev/api/order', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': 'true'
+            },
                 body: JSON.stringify(orderData)
             })
             .then(response => {
